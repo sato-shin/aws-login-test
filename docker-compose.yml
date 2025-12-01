@@ -1,0 +1,19 @@
+services:
+  app:
+    image: golang:1.25
+    working_dir: /app
+    environment:
+      - AWS_PROFILE=${AWS_PROFILE:-default}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - AWS_SDK_LOAD_CONFIG=1
+      - AWS_EC2_METADATA_DISABLED=true
+      - HOME=/home/app
+      - GOMODCACHE=/go/pkg/mod
+    volumes:
+      - ./:/app
+      - go-mod-cache:/go/pkg/mod
+      - ~/.aws:/home/app/.aws:rw
+    command: ["tail", "-f", "/dev/null"]
+
+volumes:
+  go-mod-cache:
